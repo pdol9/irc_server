@@ -1,0 +1,171 @@
+
+some general functionalities:
+/help
+
+/join <channel>{,<channel>} [<key>{,<key>}]
+/close #channel
+/part #channel
+
+/away
+/names
+/time
+/whois
+/info
+/infolist
+/nick
+/msg <nickname> <text>							private chat
+/names #channel1,#channel2, ...					Displays a list of nicks in a given channel
+
+The commands which may only be used by channel operators:
+
+        KICK    - Eject a client from the channel								/kick #channel person [reason]
+        MODE    - Change the channel's mode
+        INVITE  - Invite a client to an invite-only channel (mode +i)
+        TOPIC   - Change the channel topic in a mode +t channel
+
+
+MODE:
+syntax: /mode <mode> [parameter]
+
+b <mask>[<reason>]
+    To ban someone and display the reason.
+
+o <nick>
+    To op someone
+
+v <nick>
+    Voice someone (Speaks through ban and moderations and get a nice + by their nick)
+
+I
+    Channel is invite-only
+
+l <limit>
+    Channel is limited to participants at the same time
+
+n
+    No messages/notices is allowed to be sent to the channel from outside.
+
+m
+    Channel is moderated. Only ops and voiced people can talk.
+
+t
+    No one but the ops can change the channel topic
+
+p
+    Channel is private
+
+s
+    Channel is secret
+
+k <key>
+    Set a password-key (any text) necessary to get into the channel.
+
+r
+    ACCOUNT-limited channel
+
+
+Client information:
+nickname (max. 9 characters) - has to be unique
+username 
+
+
+
+COMMANDS:
+Connection: //MUSTHAVES - DONE
+- pass - done
+- nick - done
+- user - done
+- server - nope
+- oper - done
+- quit - done
+- squit - nope
+
+Channel Operation: //MUSTHAVES
+- join - done? 
+- part - done 
+- mode - todo 
+- topic - halfway 
+- names - halfway 
+- list - halfway 
+- invite - done
+- kick - done
+
+Server Queries: //DONE
+- motd - done
+- lusers - nope
+- version - nope
+- stats - nope
+- links - nope
+- time - nope
+- connect - nope
+- trace - nope
+- admin - nope
+- info - nope
+
+Send Messages: //MUSTHAVES - DONE
+- privmsg - done
+- notice - done
+
+User-based queries: 
+- who - nope
+- whois - maybe?
+- whowas - nope
+
+Misc.: //DONE
+- kill - nope
+- ping - done // ELSE PROBLEM WITH SOME CLIENTS
+- pong - done //ELSE PROBLEM WITH SOME CLIENTS
+- error - nope
+
+Optional: //DONE
+- away - done
+- rehash - nope
+- die - done
+- restart - nope
+- summon - nope
+- users - nope
+- wallops - nope
+- userhost - nope
+- ison - nope
+
+
+############################################################################
+
+MODE:
+USER MODES: 
+i -> invisible user - Client Attribute / Member variable
+s -> recipient for Server Notices - Client Attribute / Member variable
+w -> receives WALLOPS - irrelevant if we dont implement WALLOPS, else Client Attribute / Member variable
+o -> operator flag; added by OPER; only de-oping allowed - Client Attribute / Member variable already implemented
+
+CHANNEL MODES:
+o -> chanop privilges - ChannelUser Attribute 
+p -> private channel - Channel Attribute
+s -> secret channel - Channel Attribute
+i -> invite only - Channel Attribute
+t -> topic settable only by chanops - Channel Attribute
+n -> no message from Clients outside channel - Channel Attribute
+m -> moderated channel - Channel Attribute
+l -> user limit - Channel Attribute
+b -> ban mask - Channel Attribute?, needs to be checked for every user who wants to join
+v -> allowed to speak on moderated channel - ChannelUser Attribute
+k -> channel password - Channel Attribute
+
+Approach:
+- check if first parameter is a channel or a client -> call the according function
+- if user: set the according attributes
+- if channel: set the according attributes
+
+Attributes of Channel Users:
+- idea: add user struct in Channel class
+- contains: reference to original client (so changes in attributes are synced), chanop attribute, voice attribute
+- concept:
+struct ChannelUser
+	{
+		public:
+			bool		chanop;
+			bool		voice;
+			Client&     client; ##reference to client, so nick, operator status etc. are always up to date
+			ChannelUser(Client& client);
+	};
+

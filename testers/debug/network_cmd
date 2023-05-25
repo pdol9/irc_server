@@ -1,0 +1,15 @@
+lsof -i :port
+
+fuser port/tcp
+ps -a | grep pid
+
+
+ps ax | grep proc_name
+
+pidof proc_name
+pgrep -fa proc_name
+
+pgrep -u root sshd
+
+ps -p port -o comm=
+

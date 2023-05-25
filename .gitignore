@@ -1,0 +1,13 @@
+#test*
+#bircd
+*out
+*.o
+*.pyc
+*/client
+*/server
+
+ircserv
+client
+cli
+*.c
+ircserv.dSYM/*
